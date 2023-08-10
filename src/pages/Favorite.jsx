@@ -23,24 +23,21 @@ const Favorite = () => {
 
   const { productID } = useParams();
 
-  const [product, setProduct] = useState([]);
+ const [products, setProducts] = useState([]);
 
-  useEffect(() => {
+useEffect(() => {
     const getData = async () => {
       try {
-        await axios
-          .get(`http://localhost:5000/api/products/${productID}`)
-          .then((res) => {
-            if (res.status === 200) {
-              setProduct(res.data);
-            }
-          });
+        const res = await axios.get(`http://localhost:5000/api/favorites`); 
+        if (res.status === 200) {
+          setProducts(res.data);
+        }
       } catch (error) {
         console.log(error);
       }
     };
     getData();
-  }, [productID]);
+  }, []);
 
   //Router
   const { pathname } = useLocation()
@@ -60,31 +57,35 @@ const Favorite = () => {
               </div>
               <button className="favoriteBtn">Düzenle</button>
             </div>
-            <div className="favoriteMessage">
-              <h5>Favorilerine eklenen öğeler buraya kaydedilecek.</h5>
-            </div>
             <div className="bottom">
-              {
-                product.map((item) => (
-                  <div className="card">
-                    <Link to="/product-details">
-                      <div className="cardImg">
-                        <img src={`http://localhost:5000/${item.productImage}`} alt={product.name} />
-                      </div>
-                      <div className="cardInfo">
-                        <div className="productInfo">
-                          <p className="productName">{product.name}</p>
-                          <span className="price">₺ {product.price}</span>
-                        </div>
-                        <p className="ProductType">{product.type}</p>
-                      </div>
-                    </Link>
-                    <div className="cardBtn">
-                      <Link to="/cart" className="favoriteBtn" onClick={() => addToCart(product)}>Sepete Ekle</Link>
+              {products.map((product) => (
+                <div className="card" key={product.id}>
+                  <Link to={`/product-details/${product.id}`}>
+                    <div className="cardImg">
+                      <img
+                        src={`http://localhost:5000/${product.productImage}`}
+                        alt={product.name}
+                      />
                     </div>
+                    <div className="cardInfo">
+                      <div className="productInfo">
+                        <p className="productName">{product.name}</p>
+                        <span className="price">₺ {product.price}</span>
+                      </div>
+                      <p className="ProductType">{product.type}</p>
+                    </div>
+                  </Link>
+                  <div className="cardBtn">
+                    <Link
+                      to="/cart"
+                      className="favoriteBtn"
+                      onClick={() => addToCart(product)}
+                    >
+                      Sepete Ekle
+                    </Link>
                   </div>
-                ))
-              }
+                </div>
+              ))}
             </div>
           </div>
         </div>
