@@ -8,7 +8,7 @@ import { Context } from '../utils/Context';
 import productDetailsSizes from '../db/productDetailsSizes';
 
 const ProductDetails = () => {
-  const { addToCart } = useContext(Context);
+   const { addToCart, addToFavorites, removeFromFavorites } = useContext(Context);
 
   const [isFavorite, setIsFavorite] = useState(false);
   const [activeSize, setActiveSize] = useState(null);
@@ -18,7 +18,14 @@ const ProductDetails = () => {
   const { pathname } = useLocation();
 
   const handleFavoriteToggle = () => {
-    setIsFavorite((prevIsFavorite) => !prevIsFavorite);
+    setIsFavorite((prevIsFavorite) => {
+      if (!prevIsFavorite) {
+        addToFavorites(product);
+      } else {
+        removeFromFavorites(product.id);
+      }
+      return !prevIsFavorite;
+    });
   };
 
   const handleSizeClick = (size) => {
