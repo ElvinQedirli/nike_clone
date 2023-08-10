@@ -12,7 +12,15 @@ export const MainContext = ({ children }) => {
   const [cart, setCart] = useState([]);
   const [cartSum, setCartSum] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
+  const [favorites, setFavorites] = useState([]);
 
+  const addToFavorites = (product) => {
+    setFavorites((prevFavorites) => [...prevFavorites, product]);
+  };
+
+  const removeFromFavorites = (productId) => {
+    setFavorites((prevFavorites) => prevFavorites.filter((product) => product.id !== productId));
+  };
 
   useEffect(() => {
     //Calc Quantity
