@@ -138,7 +138,9 @@ export const MainContext = ({ children }) => {
     totalPrice,
     setTotalPrice,
     sumPrice,
-
+    favorites,       
+    addToFavorites,        
+    removeFromFavorites, 
     //Functions
     addToCart,
     removeFromCart,
